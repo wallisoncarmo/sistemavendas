@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.wallison.sistemavendas.domain.Categoria;
 import com.wallison.sistemavendas.repositoties.CategoriaRepository;
+import com.wallison.sistemavendas.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -13,7 +14,14 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 
 	public Categoria buscar(Integer id) {
-		return repo.findOne(id);
+		Categoria obj = repo.findOne(id);
+
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado ID: " + id + " Tipo: " + Categoria.class.getName());
+		}
+
+		return obj;
 	}
 
 }
