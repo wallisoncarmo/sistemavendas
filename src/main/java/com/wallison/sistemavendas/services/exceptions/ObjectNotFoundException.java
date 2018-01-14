@@ -1,7 +1,5 @@
 package com.wallison.sistemavendas.services.exceptions;
 
-import com.wallison.sistemavendas.domain.Categoria;
-
 public class ObjectNotFoundException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
