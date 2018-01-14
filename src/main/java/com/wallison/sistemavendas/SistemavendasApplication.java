@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.wallison.sistemavendas.domain.Categoria;
 import com.wallison.sistemavendas.domain.Cidade;
+import com.wallison.sistemavendas.domain.Cliente;
+import com.wallison.sistemavendas.domain.Endereco;
 import com.wallison.sistemavendas.domain.Estado;
 import com.wallison.sistemavendas.domain.Produto;
+import com.wallison.sistemavendas.domain.enums.TipoCliente;
 import com.wallison.sistemavendas.repositoties.CategoriaRepository;
 import com.wallison.sistemavendas.repositoties.CidadeRepository;
+import com.wallison.sistemavendas.repositoties.ClienteRepository;
+import com.wallison.sistemavendas.repositoties.EnderecoRepository;
 import com.wallison.sistemavendas.repositoties.EstadoRepository;
 import com.wallison.sistemavendas.repositoties.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class SistemavendasApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SistemavendasApplication.class, args);
@@ -49,6 +58,11 @@ public class SistemavendasApplication implements CommandLineRunner {
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
 
+		categoriaRepository.save(Arrays.asList(cat1, cat2));
+		produtoRepository.save(Arrays.asList(p1, p2, p3));
+
+		// Estado e cidade
+
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 
@@ -59,10 +73,20 @@ public class SistemavendasApplication implements CommandLineRunner {
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est1.getCidades().addAll(Arrays.asList(c2, c3));
 
-		categoriaRepository.save(Arrays.asList(cat1, cat2));
-		produtoRepository.save(Arrays.asList(p1, p2, p3));
 		estadoRepository.save(Arrays.asList(est1, est2));
 		cidadeRepository.save(Arrays.asList(c1, c2, c3));
 
+		// Cliente e endereco
+
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "04484386509", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("984538665", "30393843"));
+
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apt 303", "Jardim", "38546553", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38577753", cli1, c2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.save(Arrays.asList(cli1));
+		enderecoRepository.save(Arrays.asList(e1, e2));
 	}
 }
