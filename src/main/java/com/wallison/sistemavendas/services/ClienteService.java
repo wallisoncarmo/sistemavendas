@@ -32,7 +32,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Cadastra uma categoria
+	 * Cadastra um cliente
 	 * 
 	 * @param obj
 	 * @return
@@ -43,7 +43,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Atualiza uma categoria
+	 * Atualiza um cliente
 	 * 
 	 * @param obj
 	 * @return
@@ -57,7 +57,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Exclui uma categoria
+	 * Exclui um cliente
 	 * 
 	 * @param id
 	 */
@@ -72,7 +72,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Retorna uma lista com todas as categorias
+	 * Retorna um lista com todas as clientes
 	 * 
 	 * @return
 	 */
@@ -81,7 +81,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Busca uma categoria com parametros de paginação
+	 * Busca um cliente com parametros de paginação
 	 * 
 	 * @param page
 	 * @param linesPerPage
@@ -96,7 +96,7 @@ public class ClienteService {
 	}
 
 	/**
-	 * Converte categoriaDTO para categoria
+	 * Converte clienteDTO para cliente
 	 * 
 	 * @param objDto
 	 * @return
