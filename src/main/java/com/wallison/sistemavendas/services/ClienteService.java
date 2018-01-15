@@ -9,9 +9,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.wallison.sistemavendas.domain.Cidade;
 import com.wallison.sistemavendas.domain.Cliente;
+import com.wallison.sistemavendas.domain.Endereco;
+import com.wallison.sistemavendas.domain.enums.TipoCliente;
 import com.wallison.sistemavendas.dto.ClienteDTO;
+import com.wallison.sistemavendas.dto.ClienteNewDTO;
+import com.wallison.sistemavendas.repositoties.CidadeRepository;
 import com.wallison.sistemavendas.repositoties.ClienteRepository;
+import com.wallison.sistemavendas.repositoties.EnderecoRepository;
 import com.wallison.sistemavendas.services.exceptions.DataIntegrityException;
 import com.wallison.sistemavendas.services.exceptions.ObjectNotFoundException;
 
@@ -20,6 +26,10 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	@Autowired
+	private CidadeRepository cidadeRepo;
+	@Autowired
+	private EnderecoRepository enderecoRepo;
 
 	public Cliente findById(Integer id) {
 		Cliente obj = repo.findOne(id);
@@ -31,23 +41,18 @@ public class ClienteService {
 		return obj;
 	}
 
-	/**
-	 * Cadastra um cliente
-	 * 
-	 * @param obj
-	 * @return
-	 */
+
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
+		
+		obj = repo.save(obj);
+		
+		enderecoRepo.save(obj.getEnderecos());
+		
 		return repo.save(obj);
 	}
 
-	/**
-	 * Atualiza um cliente
-	 * 
-	 * @param obj
-	 * @return
-	 */
+
 	public Cliente update(Cliente obj) {
 		Cliente newObj = findById(obj.getId());
 
@@ -56,11 +61,7 @@ public class ClienteService {
 		return repo.save(newObj);
 	}
 
-	/**
-	 * Exclui um cliente
-	 * 
-	 * @param id
-	 */
+
 	public void delete(Integer id) {
 		findById(id);
 		try {
@@ -71,40 +72,49 @@ public class ClienteService {
 
 	}
 
-	/**
-	 * Retorna um lista com todas as clientes
-	 * 
-	 * @return
-	 */
+
 	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
 
-	/**
-	 * Busca um cliente com parametros de paginação
-	 * 
-	 * @param page
-	 * @param linesPerPage
-	 * @param orderBy
-	 * @param direction
-	 * @return
-	 */
+
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 
 	}
 
-	/**
-	 * Converte clienteDTO para cliente
-	 * 
-	 * @param objDto
-	 * @return
-	 */
+
 	public Cliente fromDTO(ClienteDTO objDto) {
-		// throw new UnsupportedOperationException(); // para lembrar que o metodo ainda não foram feito
+		// throw new UnsupportedOperationException(); // para lembrar que o metodo ainda
+		// não foram feito
 
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+
+
+	public Cliente fromDTO(ClienteNewDTO objDto) {
+
+		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
+				TipoCliente.toEnum(objDto.getTipo()));
+
+		Cidade cid = cidadeRepo.findOne(objDto.getCidadeId());
+
+		Endereco end = new Endereco(null, objDto.getLogadouro(), objDto.getNumero(), objDto.getComplemento(),
+				objDto.getBairro(), objDto.getCep(), cli, cid);
+
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objDto.getTelefone1());
+		
+		if (objDto.getTelefone2() != null) {
+			cli.getTelefones().add(objDto.getTelefone2());
+		}
+
+		if (objDto.getTelefone3() != null) {
+			cli.getTelefones().add(objDto.getTelefone3());
+		}
+
+		return cli;
 	}
 
 	private void updateData(Cliente newObj, Cliente obj) {

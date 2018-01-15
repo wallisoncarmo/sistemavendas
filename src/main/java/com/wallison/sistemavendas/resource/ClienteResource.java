@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.wallison.sistemavendas.domain.Cliente;
 import com.wallison.sistemavendas.dto.ClienteDTO;
+import com.wallison.sistemavendas.dto.ClienteNewDTO;
 import com.wallison.sistemavendas.services.ClienteService;
 
 @RestController
@@ -35,7 +36,7 @@ public class ClienteResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 
 		Cliente obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
