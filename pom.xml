@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wallison.sistemavendas</groupId>
-	<artifactId>sistemavendas</artifactId>
+	<artifactId>sistemavenda</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>sistemavendas</name>
+	<name>sistemavenda</name>
 	<description>Sistema de vendas</description>
 
 	<parent>
