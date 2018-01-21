@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.wallison.sistemavendas.domain.Cidade;
@@ -25,6 +26,8 @@ import com.wallison.sistemavendas.services.exceptions.ObjectNotFoundException;
 public class ClienteService {
 
 	@Autowired
+	private BCryptPasswordEncoder pe;
+	@Autowired
 	private ClienteRepository repo;
 	@Autowired
 	private CidadeRepository cidadeRepo;
@@ -41,17 +44,15 @@ public class ClienteService {
 		return obj;
 	}
 
-
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		
+
 		obj = repo.save(obj);
-		
+
 		enderecoRepo.save(obj.getEnderecos());
-		
+
 		return repo.save(obj);
 	}
-
 
 	public Cliente update(Cliente obj) {
 		Cliente newObj = findById(obj.getId());
@@ -60,7 +61,6 @@ public class ClienteService {
 
 		return repo.save(newObj);
 	}
-
 
 	public void delete(Integer id) {
 		findById(id);
@@ -72,11 +72,9 @@ public class ClienteService {
 
 	}
 
-
 	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
-
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
@@ -84,19 +82,17 @@ public class ClienteService {
 
 	}
 
-
 	public Cliente fromDTO(ClienteDTO objDto) {
 		// throw new UnsupportedOperationException(); // para lembrar que o metodo ainda
 		// não foram feito
 
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null, null);
 	}
-
 
 	public Cliente fromDTO(ClienteNewDTO objDto) {
 
 		Cliente cli = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(),
-				TipoCliente.toEnum(objDto.getTipo()));
+				TipoCliente.toEnum(objDto.getTipo()), pe.encode(objDto.getSenha()));
 
 		Cidade cid = cidadeRepo.findOne(objDto.getCidadeId());
 
@@ -105,7 +101,7 @@ public class ClienteService {
 
 		cli.getEnderecos().add(end);
 		cli.getTelefones().add(objDto.getTelefone1());
-		
+
 		if (objDto.getTelefone2() != null) {
 			cli.getTelefones().add(objDto.getTelefone2());
 		}
