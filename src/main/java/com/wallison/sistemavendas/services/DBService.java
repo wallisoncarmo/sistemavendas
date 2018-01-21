@@ -100,10 +100,10 @@ public class DBService {
 
 		// Estado e cidade
 
-		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est1 = new Estado(null, "Distrito Federal");
 		Estado est2 = new Estado(null, "São Paulo");
 
-		Cidade c1 = new Cidade(null, "UberLândia", est1);
+		Cidade c1 = new Cidade(null, "Brasília", est1);
 		Cidade c2 = new Cidade(null, "São Paulo", est2);
 		Cidade c3 = new Cidade(null, "Campinas", est2);
 
@@ -115,11 +115,11 @@ public class DBService {
 
 		// Cliente e endereco
 
-		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "04484386509", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Wallison do Carmo Costa", "wallisoncarmo01@gmail.com", "24478738599", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("984538665", "30393843"));
 
-		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apt 303", "Jardim", "38546553", cli1, c1);
-		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38577753", cli1, c2);
+		Endereco e1 = new Endereco(null, "QND 60 Bloco A", "60", "Apt 303", "Taguatinga", "7210600", cli1, c1);
+		Endereco e2 = new Endereco(null, "Setor Comercial Sul Quadra 9 Edifício Parque Cidade Corporate - Torre C Lote C", "105", "7º Andar", "Asa Sul", " 70308200", cli1, c2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
