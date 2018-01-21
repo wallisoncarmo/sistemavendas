@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
 import com.wallison.sistemavendas.domain.Cidade;
 import com.wallison.sistemavendas.domain.Cliente;
 import com.wallison.sistemavendas.domain.Endereco;
+import com.wallison.sistemavendas.domain.enums.Perfil;
 import com.wallison.sistemavendas.domain.enums.TipoCliente;
 import com.wallison.sistemavendas.dto.ClienteDTO;
 import com.wallison.sistemavendas.dto.ClienteNewDTO;
 import com.wallison.sistemavendas.repositoties.CidadeRepository;
 import com.wallison.sistemavendas.repositoties.ClienteRepository;
 import com.wallison.sistemavendas.repositoties.EnderecoRepository;
+import com.wallison.sistemavendas.security.UserSS;
+import com.wallison.sistemavendas.services.exceptions.AuthorizationException;
 import com.wallison.sistemavendas.services.exceptions.DataIntegrityException;
 import com.wallison.sistemavendas.services.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,13 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepo;
 
 	public Cliente findById(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Cliente obj = repo.findOne(id);
 
 		if (obj == null) {
