@@ -121,11 +121,11 @@ public class DBService {
 
 		Cliente cli1 = new Cliente(null, "Wallison do Carmo Costa", "wallisoncarmo01@gmail.com", "24478738599", TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("984538665", "30393843"));
+		cli1.addPerfil(Perfil.ADMIN);
 		
 		
 		Cliente cli2 = new Cliente(null, "Yasmin do Carmo Costa", "wallisontesteemail@gmail.com", "66738608551", TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli2.getTelefones().addAll(Arrays.asList("988538665", "35699943"));
-		cli2.addPerfil(Perfil.ADMIN);
 
 		Endereco e1 = new Endereco(null, "QND 60 Bloco A", "60", "Apt 303", "Taguatinga Norte", "7210600", cli1, c1);
 		Endereco e2 = new Endereco(null, "Setor Comercial Sul Quadra 9 Edifício Parque Cidade Corporate - Torre C Lote C", "105", "7º Andar", "Asa Sul", " 70308200", cli1, c2);
