@@ -20,6 +20,7 @@ import com.wallison.sistemavendas.domain.PagamentoComCartao;
 import com.wallison.sistemavendas.domain.Pedido;
 import com.wallison.sistemavendas.domain.Produto;
 import com.wallison.sistemavendas.domain.enums.EstadoPagamento;
+import com.wallison.sistemavendas.domain.enums.Perfil;
 import com.wallison.sistemavendas.domain.enums.TipoCliente;
 import com.wallison.sistemavendas.repositoties.CategoriaRepository;
 import com.wallison.sistemavendas.repositoties.CidadeRepository;
@@ -120,14 +121,19 @@ public class DBService {
 
 		Cliente cli1 = new Cliente(null, "Wallison do Carmo Costa", "wallisoncarmo01@gmail.com", "24478738599", TipoCliente.PESSOAFISICA,pe.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("984538665", "30393843"));
+		
+		
+		Cliente cli2 = new Cliente(null, "Yasmin do Carmo Costa", "wallisontesteemail@gmail.com", "66738608551", TipoCliente.PESSOAFISICA,pe.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("988538665", "35699943"));
+		cli2.addPerfil(Perfil.ADMIN);
 
-		Endereco e1 = new Endereco(null, "QND 60 Bloco A", "60", "Apt 303", "Taguatinga", "7210600", cli1, c1);
+		Endereco e1 = new Endereco(null, "QND 60 Bloco A", "60", "Apt 303", "Taguatinga Norte", "7210600", cli1, c1);
 		Endereco e2 = new Endereco(null, "Setor Comercial Sul Quadra 9 Edifício Parque Cidade Corporate - Torre C Lote C", "105", "7º Andar", "Asa Sul", " 70308200", cli1, c2);
-
+		Endereco e3 = new Endereco(null, "QNJ 30", "20", "Casa 20", "Taguatinga Norte", " 72140300", cli2, c1);
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-		clienteRepository.save(Arrays.asList(cli1));
-		enderecoRepository.save(Arrays.asList(e1, e2));
+		clienteRepository.save(Arrays.asList(cli1,cli2));
+		enderecoRepository.save(Arrays.asList(e1, e2, e3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
